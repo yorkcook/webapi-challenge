@@ -46,6 +46,11 @@ router.post("/chore", (req, res) => {
   res.status(201).json(chores);
 });
 
-router.put("/chore/:id", (req, res) => {});
+router.put("/chore/:id", (req, res) => {
+  const id = req.params.id;
+  const update = req.body;
+  chores[id] = update;
+  res.status(200).json(chores);
+});
 
 module.exports = router;
