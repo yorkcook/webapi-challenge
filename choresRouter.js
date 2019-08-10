@@ -24,8 +24,8 @@ let choreID = 1;
 router.delete("/chore/:id", (req, res) => {
   const id = req.params.id;
   console.log("in delete", id);
-  const result = chores.filter(chore => chore.id !== Number(id));
-  res.status(200).json(result);
+  chores = chores.filter(chore => chore.id !== Number(id));
+  res.status(200).json(chores);
 });
 
 router.get("/", (req, res) => {
@@ -59,7 +59,7 @@ router.get("/people/:id/chores", (req, res) => {
   }
 });
 
-router.post("/chore", (req, res) => {
+router.post("/chore", validateUser, (req, res) => {
   let chore = req.body;
 
   chore.id = choreID++;
@@ -73,5 +73,13 @@ router.put("/chore/:id", (req, res) => {
   chores[id] = update;
   res.status(200).json(chores);
 });
+
+function validateUser(req, res, next) {
+  if (people.map(person => person.id).includes(req.body.assignedTo)) {
+    next();
+  } else {
+    res.status(404).json({ message: "not working" });
+  }
+}
 
 module.exports = router;
