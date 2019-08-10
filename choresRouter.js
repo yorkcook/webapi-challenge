@@ -2,11 +2,7 @@ const express = "express";
 
 const router = require("express").Router();
 
-let chores = [
-  {
-    text: "test"
-  }
-];
+let chores = [];
 
 let people = [
   {
@@ -35,6 +31,31 @@ router.delete("/chore/:id", (req, res) => {
 router.get("/", (req, res) => {
   if (chores) {
     res.status(200).json(chores);
+  }
+});
+
+router.get("/chores", (req, res) => {
+  const completed = req.query.completed;
+
+  if (completed) {
+    const result = chores.filter(chore => chore.completed === completed);
+  } else {
+    res.status(200).json(chores);
+  }
+});
+
+router.get("/people", (req, res) => {
+  if (people) {
+    res.status(200).json(people);
+  }
+});
+
+router.get("/people/:id/chores", (req, res) => {
+  const id = req.params.id;
+  if (people.map(person => Number(person.id)).includes(Number(id))) {
+    res.status(200).json(chores.filter(chore => chore.assignedTo == id));
+  } else {
+    res.status(404).json({ error: "Ain't no one with that id got chores" });
   }
 });
 
