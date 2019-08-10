@@ -2,7 +2,11 @@ const express = "express";
 
 const router = require("express").Router();
 
-let chores = [];
+let chores = [
+  {
+    text: "test"
+  }
+];
 
 let people = [
   {
@@ -19,11 +23,23 @@ let people = [
   }
 ];
 
+let choreID = 1;
+
 router.delete("/:id", (req, res) => {});
 
-router.get("/", (req, res) => {});
+router.get("/", (req, res) => {
+  if (chores) {
+    res.status(200).json(chores);
+  }
+});
 
-router.post("/chore", (req, res) => {});
+router.post("/chore", (req, res) => {
+  let chore = req.body;
+
+  chore.id = choreID++;
+  chores.push(chore);
+  res.status(201).json(chores);
+});
 
 router.put("/chore/:id", (req, res) => {});
 
