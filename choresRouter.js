@@ -25,7 +25,12 @@ let people = [
 
 let choreID = 1;
 
-router.delete("/:id", (req, res) => {});
+router.delete("/chore/:id", (req, res) => {
+  const id = req.params.id;
+  console.log("in delete", id);
+  const result = chores.filter(chore => chore.id !== Number(id));
+  res.status(200).json(result);
+});
 
 router.get("/", (req, res) => {
   if (chores) {
